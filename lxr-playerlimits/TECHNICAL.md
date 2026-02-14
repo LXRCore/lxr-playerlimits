@@ -450,7 +450,7 @@ Each additional player slot increases server memory by ~50-100 MB.
 
 ## Legal Notice
 
-**Important**: Building custom FiveM/RedM binaries may violate the terms of service. This documentation is provided for **educational purposes** and for use with **private/whitelisted servers only**.
+**Important**: Building custom RedM binaries may violate the terms of service. This documentation is provided for **educational purposes** and for use with **private/whitelisted servers only**.
 
 - Do not distribute custom binaries publicly
 - Do not use on commercial servers without proper licensing

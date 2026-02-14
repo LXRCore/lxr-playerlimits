@@ -144,7 +144,15 @@ local function ValidatePlayerIndex(playerId)
     -- Check if player ID is within valid range
     if playerId < 1 or playerId > Config.Security.maxPlayerIdValue then
         if Config.Security.logSuspiciousActivity then
+            -- Log to console for immediate visibility
             print(string.format('[LXR-PlayerLimits] [SECURITY] Invalid player ID detected: %d', playerId))
+            
+            -- TODO: Implement webhook/database logging for audit trails
+            -- Example: TriggerEvent('lxr-playerlimits:logSecurityEvent', {
+            --     type = 'invalid_player_id',
+            --     playerId = playerId,
+            --     timestamp = os.time()
+            -- })
         end
         return false
     end
