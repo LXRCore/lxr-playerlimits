@@ -1,0 +1,295 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# 🐺 RedM Extended Player Limits - Example Server Configuration
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# This is a production-ready server.cfg for a RedM server with 128 player
+# support using the LXR Player Limits extended build.
+#
+# Author: iBoss21 / The Lux Empire
+# Server: The Land of Wolves (wolves.land)
+# Version: 1.0.0
+#
+# ═══════════════════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SERVER IDENTITY
+# ═══════════════════════════════════════════════════════════════════════════
+
+sv_hostname "🐺 The Land of Wolves - 128 Player RP Server | მგლების მიწა"
+sv_projectName "RedM Extended - Land of Wolves"
+sv_projectDesc "Georgian Serious Hardcore Roleplay | Extended Player Capacity | ისტორია ცოცხლდება აქ!"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# LICENSING (REQUIRED)
+# ═══════════════════════════════════════════════════════════════════════════
+# Get your license key from: https://keymaster.fivem.net/
+
+sv_licenseKey "YOUR_CFXRE_LICENSE_KEY_HERE"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# GAME CONFIGURATION
+# ═══════════════════════════════════════════════════════════════════════════
+
+set gamename rdr3
+
+# ═══════════════════════════════════════════════════════════════════════════
+# EXTENDED PLAYER LIMITS (CRITICAL)
+# ═══════════════════════════════════════════════════════════════════════════
+# This is the most important setting - it enables 128 player support
+# Values: 32 (standard), 64, 96, 128, 256 (if built for it)
+
+set sv_maxclients 128
+
+# ═══════════════════════════════════════════════════════════════════════════
+# ONESYNC (REQUIRED FOR EXTENDED PLAYERS)
+# ═══════════════════════════════════════════════════════════════════════════
+# Options: off, on, legacy, infinity
+# For 64+ players, use "infinity" for best performance
+
+set onesync infinity
+
+# ═══════════════════════════════════════════════════════════════════════════
+# NETWORK OPTIMIZATION
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Increase packet buffer for high player counts
+set sv_packetBuffer 10000
+
+# Increase bandwidth allocation (kbps)
+set sv_bandwidth 50000
+
+# Reduce tick rate slightly for better performance with many players
+# Standard is 60, we reduce to 50 for 128 players
+set sv_maxTickRate 50
+
+# Enable network compression
+set sv_useCompression true
+
+# ═══════════════════════════════════════════════════════════════════════════
+# ONESYNC PERFORMANCE TUNING
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Enable distance-based entity culling for vehicles
+set onesync_distanceCullVehicles true
+
+# Set entity culling distance (meters)
+# Default: 424.0, Reduced for performance with many players
+set onesync_distanceCullEntity 350.0
+
+# Disable ambient population (peds, vehicles) for performance
+set onesync_population false
+
+# Use map-based entity fallback
+set onesync_useMapFallback true
+
+# Population multiplier (0.0 to 1.0)
+set onesync_populationMultiplier 0.3
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SERVER SECURITY
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Enable server security features
+set sv_scriptHookAllowed false
+set sv_enableNetworkedSounds true
+set sv_enableNetworkedPhoneExplosions false
+
+# Anti-cheat
+set sv_filterRequestControl "1"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SERVER INFORMATION & LISTING
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Locale
+set sv_locale "en-US"
+
+# Tags for server browser (comma-separated)
+sets tags "roleplay,128players,extended,lxr,georgian,serious,onesync,whitelisted"
+
+# Server banner image URL
+sets banner_connecting "https://your-server.com/banner.png"
+sets banner_detail "https://your-server.com/banner.png"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# STEAM WEB API (For Steam Authentication)
+# ═══════════════════════════════════════════════════════════════════════════
+# Get your key from: https://steamcommunity.com/dev/apikey
+
+set steam_webApiKey "YOUR_STEAM_WEB_API_KEY_HERE"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# DISCORD INTEGRATION (Optional)
+# ═══════════════════════════════════════════════════════════════════════════
+
+set sv_discordAppId "YOUR_DISCORD_APP_ID"
+
+# Discord invite link
+sets Discord "https://discord.gg/CrKcWdfd3A"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# WEBSITE & SOCIAL LINKS
+# ═══════════════════════════════════════════════════════════════════════════
+
+sets Website "https://www.wolves.land"
+sets Store "https://theluxempire.tebex.io"
+sets GitHub "https://github.com/LXRCore/lxr-playerlimits"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# RESOURCES - CORE SYSTEMS (Load Order Important)
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Player Limits Resource (LOAD FIRST)
+ensure lxr-playerlimits
+
+# Framework (Choose one)
+# ensure lxr-core
+# ensure rsg-core
+# ensure vorp_core
+# ensure redem_roleplay
+# ensure qbr-core
+
+# ═══════════════════════════════════════════════════════════════════════════
+# RESOURCES - ESSENTIALS
+# ═══════════════════════════════════════════════════════════════════════════
+
+# ensure ox_lib
+# ensure ox_inventory
+# ensure ox_target
+
+# ═══════════════════════════════════════════════════════════════════════════
+# RESOURCES - GAMEPLAY
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Add your gameplay resources here
+# ensure your-resource-1
+# ensure your-resource-2
+
+# ═══════════════════════════════════════════════════════════════════════════
+# ADMIN PERMISSIONS
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Admin group permissions
+add_ace group.admin command allow
+add_ace group.admin command.quit deny
+add_ace group.admin command.stop deny
+
+# Moderator group permissions
+add_ace group.mod command.kick allow
+add_ace group.mod command.ban allow
+add_ace group.mod command.unban allow
+
+# Add your admin identifiers here
+# Format: identifier.steam:STEAM_ID or identifier.discord:DISCORD_ID
+add_principal identifier.steam:YOUR_STEAM_ID_HERE group.admin
+# add_principal identifier.discord:YOUR_DISCORD_ID_HERE group.admin
+
+# Add your moderator identifiers here
+# add_principal identifier.steam:MODERATOR_STEAM_ID group.mod
+
+# ═══════════════════════════════════════════════════════════════════════════
+# CONSOLE LOGGING
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Log level: 0=none, 1=fatal, 2=error, 3=warning, 4=info, 5=verbose, 6=trace
+set con_logLevel 4
+
+# Enable logging to file
+set sv_logFile "server.log"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# ADVANCED SETTINGS (Optional - Uncomment if needed)
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Server list visibility (set to "true" to hide from public list)
+# set sv_master1 ""
+
+# Force headless mode (no game window on server)
+# set sv_forceHeadless true
+
+# Custom endpoint (if behind NAT/firewall)
+# endpoint_add_tcp "0.0.0.0:30120"
+# endpoint_add_udp "0.0.0.0:30120"
+
+# Custom RCon port
+# rcon_port 30110
+# rcon_password "your_secure_rcon_password"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# PERFORMANCE MONITORING
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Enable performance profiler
+# set sv_profileResourceTime true
+
+# Resource time warning threshold (milliseconds)
+# set sv_profilerSlowResourceTime 10
+
+# ═══════════════════════════════════════════════════════════════════════════
+# CUSTOM COMMANDS (Optional)
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Add custom commands here
+# add_ace resource.your-resource command.yourcommand allow
+
+# ═══════════════════════════════════════════════════════════════════════════
+# END OF CONFIGURATION
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Server startup message
+print [[
+
+    ═══════════════════════════════════════════════════════════════════════════
+    
+         ██╗     ██╗  ██╗██████╗        ██████╗ ██╗      █████╗ ██╗   ██╗
+         ██║     ╚██╗██╔╝██╔══██╗      ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝
+         ██║      ╚███╔╝ ██████╔╝█████╗██████╔╝██║     ███████║ ╚████╔╝ 
+         ██║      ██╔██╗ ██╔══██╗╚════╝██╔═══╝ ██║     ██╔══██║  ╚██╔╝  
+         ███████╗██╔╝ ██╗██║  ██║      ██║     ███████╗██║  ██║   ██║   
+         ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝      ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   
+         
+         ███████╗██████╗  ██████╗     ██╗██████╗  █████╗  ██████╗ 
+         ██╔════╝██╔══██╗██╔════╝    ███║╚════██╗██╔══██╗██╔═══██╗
+         █████╗  ██████╔╝██║         ╚██║ █████╔╝╚█████╔╝╚█████╔╝
+         ██╔══╝  ██╔══██╗██║          ██║██╔═══╝  ╚═══██╗██╔══██╗
+         ███████╗██║  ██║╚██████╗     ██║███████╗ █████╔╝╚█████╔╝
+         ╚══════╝╚═╝  ╚═╝ ╚═════╝     ╚═╝╚══════╝ ╚════╝  ╚════╝ 
+    
+    ═══════════════════════════════════════════════════════════════════════════
+    
+         🐺 RedM Extended Player Limits - 128 Player Server
+         The Land of Wolves | მგლების მიწა | wolves.land
+         
+         Developed by: iBoss21 / The Lux Empire
+         Version: 1.0.0
+         
+    ═══════════════════════════════════════════════════════════════════════════
+    
+]]
+
+# ═══════════════════════════════════════════════════════════════════════════
+# NOTES & TROUBLESHOOTING
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# If server shows "Standard Build" in console:
+#   1. Verify you built the custom RedM binaries
+#   2. Check NetworkPlayerMgr.cpp has the 0x80 pattern (not 0x20)
+#   3. Ensure you're using the compiled binaries from code/bin/server/
+#
+# If players can't connect beyond 31:
+#   1. Verify "set onesync infinity" is enabled
+#   2. Check "set sv_maxclients 128" is set
+#   3. Restart server completely after config changes
+#
+# Performance issues with many players:
+#   1. Reduce onesync_distanceCullEntity (try 300.0 or 250.0)
+#   2. Set onesync_population false
+#   3. Enable dynamic sync distance in lxr-playerlimits config
+#   4. Upgrade server hardware (16+ cores, 32+ GB RAM recommended)
+#
+# For support:
+#   - Discord: https://discord.gg/CrKcWdfd3A
+#   - GitHub: https://github.com/LXRCore/lxr-playerlimits/issues
+#   - Documentation: See BUILD_INSTRUCTIONS.md, TECHNICAL.md, QUICKSTART.md
+#
+# ═══════════════════════════════════════════════════════════════════════════
