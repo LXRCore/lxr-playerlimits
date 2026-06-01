@@ -58,12 +58,12 @@ if ($Game -eq "server") {
 if (!$IsServer) {
     ## build UI
     Push-Location $WorkDir
-    $UICommit = (git rev-list -1 HEAD ext/ui-build/ ext/cfx-ui/)
+    $UICommit = (git rev-list -1 HEAD ext/ui-build/)
     Pop-Location
 
     Push-Location $WorkDir\ext\ui-build
     if (!(Test-Path data\.commit) -or $UICommit -ne (Get-Content data\.commit)) {
-        .\build.cmd | Out-Null
+        .\build.cmd $Game | Out-Null
         
         $UICommit | Out-File -Encoding ascii -NoNewline data\.commit
     }
@@ -138,7 +138,7 @@ if (!$IsServer) {
     Push-Location $WorkDir\ext\system-resources
 
     Push-Location $WorkDir
-    $SRCommit = (git rev-list -1 HEAD ext/txAdmin ext/system-resources/)
+    $SRCommit = (git rev-list -1 HEAD ext/system-resources/)
     Pop-Location
 
     if (!(Test-Path .commit) -or $SRCommit -ne (Get-Content .commit)) {

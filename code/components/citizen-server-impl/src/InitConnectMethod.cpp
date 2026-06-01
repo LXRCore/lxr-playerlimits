@@ -418,8 +418,8 @@ static InitFunction initFunction([]()
 			{
 				previousTitle = gameName;
 
-				std::string limitsFileUrl = "https://content.cfx.re/mirrors/client/pool-size-limits/";
-				limitsFileUrl += gameName == fx::GameName::GTA5 ? "fivem.json" : "redm.json";
+				std::string limitsFileUrl = "https://gss.cfx-services.net/v1/public/pool-size-limits/";
+				limitsFileUrl += gameName == fx::GameName::GTA5 ? "fivem" : "redm";
 
 				fx::PoolSizeManager::FetchLimits(limitsFileUrl, true);
 			}
@@ -522,12 +522,6 @@ static InitFunction initFunction([]()
 
 			cb(json(nullptr));
 		});
-
-		auto experimentalStateBagsHandler = instance->AddVariable<bool>("sv_experimentalStateBagsHandler", ConVar_None, true);
-		auto experimentalOneSyncPopulation = instance->AddVariable<bool>("sv_experimentalOneSyncPopulation", ConVar_None, true);
-		// todo: remove fx::ServerGameState::GetGameEventHandler, fx::ServerGameState::GetHandler and fx::ServerGameState::GetRequestControlEventHandler when experimentalNetEvents is enabled by default and no longer a experiment
-		auto experimentalNetEvents = instance->AddVariable<bool>("sv_experimentalNetGameEventHandler", ConVar_None, true);
-		auto experimentalNetEventReassembly = instance->AddVariable<bool>("sv_experimentalNetEventReassemblyHandler", ConVar_None, false);
 
 		instance->GetComponent<fx::ClientMethodRegistry>()->AddHandler("initConnect", [=](const std::map<std::string, std::string>& postMap, const fwRefContainer<net::HttpRequest>& request, const std::function<void(const json&)>& cb)
 		{
@@ -702,26 +696,7 @@ static InitFunction initFunction([]()
 			json data = json::object();
 			data["protocol"] = 5;
 
-			if (experimentalNetEventReassembly->GetValue())
-			{
-				data["bitVersion"] = net::NetBitVersion::netVersion5;
-			}
-			else if (experimentalNetEvents->GetValue())
-			{
-				data["bitVersion"] = net::NetBitVersion::netVersion4;
-			}
-			else if (experimentalOneSyncPopulation->GetValue())
-			{
-				data["bitVersion"] = net::NetBitVersion::netVersion3;
-			}
-			else if (experimentalStateBagsHandler->GetValue())
-			{
-				data["bitVersion"] = net::NetBitVersion::netVersion2;
-			}
-			else
-			{
-				data["bitVersion"] = net::NetBitVersion::netVersion1;
-			}
+			data["bitVersion"] = net::NetBitVersion::netVersion5;
 
 			data["pure"] = pureVar->GetValue();
 			data["sH"] = shVar->GetValue();
@@ -729,10 +704,7 @@ static InitFunction initFunction([]()
 			data["onesync"] = fx::IsOneSync();
 			data["onesync_big"] = fx::IsBigMode();
 			data["onesync_lh"] = fx::IsLengthHack();
-			if (experimentalOneSyncPopulation->GetValue())
-			{
-				data["onesync_population"] = fx::IsOneSyncPopulation();
-			}
+			data["onesync_population"] = fx::IsOneSyncPopulation();
 
 			data["token"] = token;
 			data["gamename"] = gameName;
@@ -783,6 +755,7 @@ static InitFunction initFunction([]()
 			}
 
 			bool gameNameMatch = false;
+			bool serverIdMatch = false;
 
 			if (ticketData.extraJson)
 			{
@@ -799,6 +772,17 @@ static InitFunction initFunction([]()
 							gameNameMatch = true;
 						}
 					}
+
+					if (json["si"].is_string())
+					{
+						auto sentServerId = json["si"].get<std::string>();
+
+						auto serverIdVar = instance->GetComponent<console::Context>()->GetVariableManager()->FindEntryRaw("sv_serverId");
+						if (serverIdVar && sentServerId == serverIdVar->GetValue())
+						{
+							serverIdMatch = true;
+						}
+					}
 				}
 				catch (std::exception& e)
 				{
@@ -811,11 +795,18 @@ static InitFunction initFunction([]()
 			if (lanVar->GetValue())
 			{
 				gameNameMatch = true;
+				serverIdMatch = true;
 			}
 
 			if (!gameNameMatch)
 			{
 				sendError("CitizenFX ticket authorization failed. (3)");
+				return;
+			}
+
+			if (!serverIdMatch)
+			{
+				sendError("CitizenFX ticket authorization failed. (4)");
 				return;
 			}
 
